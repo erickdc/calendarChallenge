@@ -10,6 +10,9 @@ const validate = (state) => {
     if (state.message.length > 30) {
         errors.message = 'Max 30 chars';
     }
+    if (state.color.trim() === '') {
+        errors.color = 'Please select a color';
+    }
     return errors;
 }
 

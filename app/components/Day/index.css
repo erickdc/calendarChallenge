@@ -1,6 +1,6 @@
 .box {
     width: 95px;
-    height: 100px;
+    height: 140px;
     border: 1px solid black;
 }
 
@@ -8,3 +8,16 @@
     margin-right: 5px;
 }
   
+.scroll {
+    overflow-y: auto;
+}
+
+.weekend {
+    background-color: #F1F1F1;
+    color:  #46749D;
+}
+
+.number {
+    margin-left: 1%;
+    font-weight: bold;
+}

@@ -9,12 +9,15 @@ export default class EditorModal extends Component {
         super(props);
     }
     render() {
-        const { title, show, handleClose } = this.props;
+        const { title, show, handleClose, selectedDay } = this.props;
         return (<Modal show={show} animation={false} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Create Reminder</Modal.Title>
           </Modal.Header>
-          <Modal.Body><CreateReminder></CreateReminder></Modal.Body>
+          <Modal.Body>
+            <CreateReminder
+           handleClose={handleClose}
+           selectedDay={selectedDay}/></Modal.Body>
         </Modal>);
     }
 }

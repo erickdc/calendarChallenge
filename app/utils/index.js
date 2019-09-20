@@ -5,7 +5,11 @@ export function getDayInMonth(month, year) {
 export function getDaysArray(amount) {
     let days = [];
     for(var i = 1; i <= amount; i++) {
-        days.push({ number: i, actualDate: new Date(2019, 9, i)});
+        days.push({ number: i, actualDate: new Date(2019, 8, i)});
     }
     return days;
 } 
+
+export function isWeekend(date) {
+    return !(date.getDay() % 6);
+}

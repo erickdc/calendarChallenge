@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Input from "../../components/Input";
 import  * as reminderActions from "../../containers/Reminder/actions";
 import validate from "./validate";
+import SelectInput from "../../components/SelectInput";
 
 const CustomInput = ({ value, onClick }) => (
     <Col>
@@ -21,10 +22,12 @@ class CreateReminder extends Component {
             showModal: false,
             message: '',
             city: '',
-            currentDateTime: new Date(),
+            color: '',
+            currentDateTime: new Date(2019, 8, this.props.selectedDay),
             errors: { 
                 city: '',
                 message: '',
+                color: '',
             }
         };
     }
@@ -35,12 +38,14 @@ class CreateReminder extends Component {
         if (Object.keys(errors).length  > 0) {
           return false;
         }
-        const { message, city, currentDateTime } = this.state;
+        const { message, city, currentDateTime, color } = this.state;
         this.props.actions.createReminder({
             message,
             city,
             currentDateTime,
+            color
         });
+        this.props.handleClose();
     }
     handleChange = (e) => {
         const name = e.target.name;
@@ -97,6 +102,20 @@ class CreateReminder extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
+                    <SelectInput
+                        as={Col}
+                        controlId="color"
+                        label="Color"
+                        required
+                        name="color"
+                        type="text"
+                        placeholder="Choose a color"
+                        errorMessage={errors["color"]}
+                        handleChange={this.handleChange}
+                        options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}>
+                    </SelectInput>
+                </Form.Row>
+                <Form.Row>
                     <Button as={Col} variant="primary" type="submit" onClick={this.save}>
                         Save Changes
                     </Button>
@@ -106,8 +125,11 @@ class CreateReminder extends Component {
     }
 }
 
-export function mapStateToProps(state) {
-    return {};
+export function mapStateToProps(state, ownProps) {
+    console.log(ownProps);
+    return {
+        selectedDay: ownProps.selectedDay,
+    };
   }
    
   export function mapDispatchToProps(dispatch) {

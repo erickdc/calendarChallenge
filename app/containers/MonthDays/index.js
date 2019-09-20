@@ -13,6 +13,7 @@ export default class MonthDays extends Component {
             amountOfDays,
             days,
             showModal: false,
+            selectedDay: 0,
             renderedDays: this.renderDays(days, amountOfDays),
         };
     }
@@ -20,11 +21,10 @@ export default class MonthDays extends Component {
         this.setState({ ...this.state, showModal: false });
     }
     onClick = (day) => {
-        this.setState({ ...this.state, showModal: true });
+        this.setState({ ...this.state, showModal: true, selectedDay: day });
     }
     getDays = (partialDays) => {
-        return partialDays.map((day) => <Day onClick={this.onClick} 
-        number={day.number}></Day>);
+        return partialDays.map((day) => <Day onClick={this.onClick} {...day}></Day>);
     }
     renderDays = (days, amountOfDays) => {
         let daysComponent = [];
@@ -34,9 +34,11 @@ export default class MonthDays extends Component {
         return daysComponent;
     }
     render() {
-        const { renderedDays, showModal } = this.state;
-        return (<Container>
-         <EditorModal show={showModal} handleClose={this.handleClose} />
+        const { renderedDays, showModal, selectedDay } = this.state;
+        return (<Container fluid={true}>
+         <EditorModal selectedDay={selectedDay}
+            show={showModal} 
+            handleClose={this.handleClose} />
         {renderedDays}
         </Container>);
     }

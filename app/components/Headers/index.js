@@ -4,10 +4,10 @@ import styles from "./index.css";
 
 export default class Headers extends Component {
     render() {
-        const { headers, amount } = this.props;
-        return (<Container>
+        const { headers } = this.props;
+        return (<Container fluid={true}>
             <Row>
-            {headers.map((day) => <Col className={'background'} xs={amount/7}><p>{day}</p></Col>)}</Row>
+            {headers.map((day) => <Col className={'background'}><p>{day}</p></Col>)}</Row>
             </Container>);
     }
 }
