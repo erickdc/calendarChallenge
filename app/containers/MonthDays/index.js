@@ -13,6 +13,7 @@ export default class MonthDays extends Component {
             amountOfDays,
             days,
             showModal: false,
+            renderedDays: this.renderDays(days, amountOfDays),
         };
     }
     handleClose = () => {
@@ -33,15 +34,10 @@ export default class MonthDays extends Component {
         return daysComponent;
     }
     render() {
-        const { days, amountOfDays, showModal } = this.state;
+        const { renderedDays, showModal } = this.state;
         return (<Container>
-         <EditorModal 
-            show={showModal} 
-            handleClose={this.handleClose}
-
-        >
-        </EditorModal>
-            {this.renderDays(days, amountOfDays)}
+         <EditorModal show={showModal} handleClose={this.handleClose} />
+        {renderedDays}
         </Container>);
     }
 
