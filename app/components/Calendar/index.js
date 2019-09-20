@@ -11,9 +11,10 @@ export default class Calendar extends Component {
         }
     }
     render() {
-        const { weekDays } = this.state;
+        const { weekDays, reminders } = this.state;
         return (<div>
-            <Headers weekDays={weekDays}></Headers>
+            <Headers headers={['September 2019']} amount={14}/>
+            <Headers headers={weekDays} amount={weekDays.length}></Headers>
             <MonthDays></MonthDays>
         </div>);
     }

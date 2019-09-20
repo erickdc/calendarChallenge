@@ -1,29 +1,47 @@
 import React, { Component } from "react";
-import { Row, Container, Col } from 'react-bootstrap';
+import { Row, Container } from 'react-bootstrap';
 import Day from "../../components/Day";
-import { getDaysArray } from "../../utils/index";
-
+import EditorModal from "../../components/EditorModal";
+import { getDaysArray, getDayInMonth } from "../../utils/index";
 export default class MonthDays extends Component {
     constructor(props) {
         super(props);
+        const amountOfDays = getDayInMonth(9,2019);
+        const days = getDaysArray(amountOfDays);
+
         this.state = {
-            days: getDaysArray(31),
+            amountOfDays,
+            days,
+            showModal: false,
         };
     }
-    getDays = (partialDays) => {
-        return partialDays.map((day) => <Day number={day}></Day>);
+    handleClose = () => {
+        this.setState({ ...this.state, showModal: false });
     }
-    renderDays = (days) => {
+    onClick = (day) => {
+        this.setState({ ...this.state, showModal: true });
+    }
+    getDays = (partialDays) => {
+        return partialDays.map((day) => <Day onClick={this.onClick} 
+        number={day.number}></Day>);
+    }
+    renderDays = (days, amountOfDays) => {
         let daysComponent = [];
-        for(var i = 0; i < days.length; i+=7) {
+        for(var i = 0; i < amountOfDays; i+=7) {
             daysComponent.push(<Row>{this.getDays(days.slice(i, i + 7))}</Row>);
         }
         return daysComponent;
     }
     render() {
-        const { days } = this.state;
+        const { days, amountOfDays, showModal } = this.state;
         return (<Container>
-            {this.renderDays(days)}
+         <EditorModal 
+            show={showModal} 
+            handleClose={this.handleClose}
+
+        >
+        </EditorModal>
+            {this.renderDays(days, amountOfDays)}
         </Container>);
     }
 

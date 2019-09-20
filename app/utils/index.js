@@ -1,12 +1,11 @@
 export function getDayInMonth(month, year) {
-    return new Date(month, year, 0).getDate();
+    return new Date(year, month, 0).getDate();
 }
 
 export function getDaysArray(amount) {
     let days = [];
     for(var i = 1; i <= amount; i++) {
-        days.push(i);
+        days.push({ number: i, actualDate: new Date(2019, 9, i)});
     }
-    console.log(days);
     return days;
 } 
