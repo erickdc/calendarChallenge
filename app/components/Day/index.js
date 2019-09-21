@@ -4,6 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import moment from 'moment';
 import Reminder from '../../containers/Reminder';
 import { isWeekend } from '../../utils';
+require('./index.css');
 
 class Day extends Component {
   constructor(props) {

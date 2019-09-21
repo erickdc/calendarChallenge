@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Form, Container, Col, Button } from 'react-bootstrap';
+import { Form, Container, Col, Button, Row } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-
 import 'react-datepicker/dist/react-datepicker.css';
 import Input from '../../components/Input';
 import * as reminderActions from '../Reminder/actions';
 import validate from './validate';
 import SelectInput from '../../components/SelectInput';
+const { requestApi } = require('../../utils/api');
 
 const CustomInput = ({ value, onClick }) => (
   <Col>
@@ -17,7 +17,7 @@ const CustomInput = ({ value, onClick }) => (
     </Button>
   </Col>
 );
-class ReminderEditor extends Component {
+export class ReminderEditor extends Component {
   constructor(props) {
     super(props);
     let reminderInfo = {
@@ -29,6 +29,9 @@ class ReminderEditor extends Component {
     };
     if (this.props.isEdit) {
       reminderInfo = this.props.selectedReminder;
+      // historical weather is not free
+      requestApi(`forecast?q=${reminderInfo.city}&cnt=1&APPID=06a4c6f153fa57c2354ab709f010f8fb`)
+      .then((result) => this.setState({ forecast: result }));
     }
     this.state = {
       showModal: false,
@@ -57,7 +60,7 @@ class ReminderEditor extends Component {
     });
     this.props.handleClose();
   };
-  
+
   updateReminder = () => {
     const errors = validate(this.state);
     this.setState({ errors });
@@ -85,8 +88,8 @@ class ReminderEditor extends Component {
     });
   };
   render() {
-    const { errors, message, city, currentDateTime, color } = this.state;
-
+    const { errors, message, city, currentDateTime, color, forecast } = this.state;
+    console.log('this.star', this.state);
     const { isEdit } = this.props;
     const clickEvent = isEdit ? this.updateReminder : this.createReminder;
     return (
@@ -148,6 +151,13 @@ class ReminderEditor extends Component {
               value={color}
             />
           </Form.Row>
+          {isEdit && forecast &&  forecast.cod !== '404' && (<Row>
+            <Col>
+              <p>Weather: <img src={`http://openweathermap.org/img/w/${forecast.list[0].weather[0].icon}.png`} 
+              alt="Avatar" class="image"/>{forecast.list[0].weather[0].description}</p>
+              </Col>
+          </Row>
+          )}
           <Form.Row>
             <Button
               as={Col}
