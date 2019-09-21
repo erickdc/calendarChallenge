@@ -1,51 +1,58 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 import moment from 'moment';
-import styles from "./index.css";
-import Reminder from "../../containers/Reminder";
-import { isWeekend } from "../../utils";
+import Reminder from '../../containers/Reminder';
+import { isWeekend } from '../../utils';
 
 class Day extends Component {
-    constructor(props) {
-        super(props);
-        const isWeekendDay = isWeekend(this.props.actualDate);
-        this.state = {
-            weekend: isWeekendDay ? 'weekend' : '',
-        }
-    }
-    render() {
-        const { number, onClick, reminders } = this.props;
-        const { weekend } = this.state;
-        return (<Col onClick={onClick.bind(this, number)} 
-            className={`box scroll ${weekend}`}>
-            <Row className={'number'}>{number}</Row>
-                {reminders.map((reminder) => 
-                (<Row>
-                    <Reminder 
-                        {...reminder}
-                    ></Reminder>
-                </Row>))}
-        </Col>);
-    }
-}
-
-export const mapStateToProps = (
-    { reminder }, ownProps
-  ) => {
-    return {
-        actualDate: ownProps.actualDate,
-        reminders: reminder.reminders
-            .filter(r => moment(r.currentDateTime.toLocaleDateString())
-            .isSame(`9/${ownProps.number}/2019`))
-            .sort((a, b) => a.currentDateTime - b.currentDateTime)
-    };
-  };
-   
-  export function mapDispatchToProps(dispatch) {
-    return { 
-        dispatch
+  constructor(props) {
+    super(props);
+    const isWeekendDay = isWeekend(this.props.actualDate);
+    this.state = {
+      weekend: isWeekendDay ? 'weekend' : '',
     };
   }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(Day);
+
+  render() {
+    const { number, onClick, reminders } = this.props;
+    const { weekend } = this.state;
+    return (
+      <Col
+        onClick={onClick.bind(this, number)}
+        className={`box scroll ${weekend}`}
+      >
+        <Row className={'number'}>{number}</Row>
+        {reminders.map(reminder => (
+          <Row>
+            <Reminder {...reminder} />
+          </Row>
+        ))}
+      </Col>
+    );
+  }
+}
+
+export const mapStateToProps = ({ reminder }, ownProps) => {
+  return {
+    actualDate: ownProps.actualDate,
+    reminders: reminder.reminders
+      .filter(r =>
+        moment(r.currentDateTime.toLocaleDateString()).isSame(
+          `9/${ownProps.number}/2019`,
+        ),
+      )
+      .sort((a, b) => a.currentDateTime - b.currentDateTime),
+  };
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Day);

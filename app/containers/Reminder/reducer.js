@@ -5,8 +5,13 @@
  */
 import produce from 'immer';
 
-import { CREATE_REMINDER, SELECT_REMINDER, 
-  CLEAN_SELECTED_REMINDER, SHOW_EDIT_MODAL } from './constants';
+import {
+  CREATE_REMINDER,
+  SELECT_REMINDER,
+  CLEAN_SELECTED_REMINDER,
+  SHOW_EDIT_MODAL,
+  UPDATE_REMINDER,
+} from './constants';
 
 export const initialState = {
   reminders: [],
@@ -16,31 +21,43 @@ export const initialState = {
 
 /* eslint-disable default-case, no-param-reassign */
 const reminderReducer = (state = initialState, action) =>
-  produce(state, draft => {
+  produce(state, () => {
     switch (action.type) {
       case CREATE_REMINDER:
-        return { 
+        return {
           ...state,
-          reminders: [...state.reminders, action.reminder]
+          reminders: [...state.reminders, action.reminder],
         };
-        case SELECT_REMINDER:
-          return { 
-            ...state,
-            selectedReminder: action.reminder,
-            showEditModal: true,
-          };
-        case CLEAN_SELECTED_REMINDER: 
-          return { 
-            ...state,
-            selectedReminder: {},
-            showEditModal: false,
-          };
-        case SHOW_EDIT_MODAL:
-          return {
-            ...state,
-            showEditModal: true,
-          }
-      }
+      case UPDATE_REMINDER:
+        const { reminders } = state;
+        const updatedReminder = action.reminder;
+        const reminderSelectedIndex = reminders.findIndex(
+          r => r.id === updatedReminder.id,
+        );
+        reminders[reminderSelectedIndex] = updatedReminder;
+        console.log('reminders', reminders, updatedReminder);
+        return {
+          ...state,
+          reminders,
+        };
+      case SELECT_REMINDER:
+        return {
+          ...state,
+          selectedReminder: action.reminder,
+          showEditModal: true,
+        };
+      case CLEAN_SELECTED_REMINDER:
+        return {
+          ...state,
+          selectedReminder: {},
+          showEditModal: false,
+        };
+      case SHOW_EDIT_MODAL:
+        return {
+          ...state,
+          showEditModal: true,
+        };
+    }
   });
 
 export default reminderReducer;

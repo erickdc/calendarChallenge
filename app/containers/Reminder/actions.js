@@ -1,10 +1,15 @@
 /*
  *
- * LanguageProvider actions
+ * Reminder actions
  *
  */
 
-import { CREATE_REMINDER, SELECT_REMINDER, CLEAN_SELECTED_REMINDER } from './constants';
+import {
+  CREATE_REMINDER,
+  SELECT_REMINDER,
+  CLEAN_SELECTED_REMINDER,
+  UPDATE_REMINDER,
+} from './constants';
 
 export function createReminder(reminder) {
   return {
@@ -13,6 +18,12 @@ export function createReminder(reminder) {
   };
 }
 
+export function updateReminder(reminder) {
+  return {
+    type: UPDATE_REMINDER,
+    reminder,
+  };
+}
 export function selectReminder(reminder) {
   return {
     type: SELECT_REMINDER,

@@ -1,159 +1,187 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from "redux";
+import { bindActionCreators } from 'redux';
 import { Form, Container, Col, Button } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
- 
-import "react-datepicker/dist/react-datepicker.css";
-import Input from "../../components/Input";
-import  * as reminderActions from "../Reminder/actions";
-import validate from "./validate";
-import SelectInput from "../../components/SelectInput";
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+import Input from '../../components/Input';
+import * as reminderActions from '../Reminder/actions';
+import validate from './validate';
+import SelectInput from '../../components/SelectInput';
 
 const CustomInput = ({ value, onClick }) => (
-    <Col>
-        <Button variant="dark" onClick={onClick}>{value}</Button>
-    </Col>
+  <Col>
+    <Button variant="dark" onClick={onClick}>
+      {value}
+    </Button>
+  </Col>
 );
 class ReminderEditor extends Component {
-    constructor(props) {
-        super(props);
-        let reminderInfo = {
-            message: '',
-            city: '',
-            color: '',
-            currentDateTime: new Date(2019, 8, this.props.selectedDay),
-        }
-        if (this.props.isEdit) {
-            const { message, city, 
-                color, currentDateTime } = this.props.selectedReminder;
-            reminderInfo =  { message, city, color, currentDateTime };
-        }
-        this.state = {
-            showModal: false,
-            ...reminderInfo,
-            errors: { 
-                city: '',
-                message: '',
-                color: '',
-            }
-        };
+  constructor(props) {
+    super(props);
+    let reminderInfo = {
+      id: '',
+      message: '',
+      city: '',
+      color: '',
+      currentDateTime: new Date(2019, 8, this.props.selectedDay),
+    };
+    if (this.props.isEdit) {
+      reminderInfo = this.props.selectedReminder;
     }
-    save = (e) => {
-        e.preventDefault();
-        const errors = validate(this.state);
-        this.setState({ errors });
-        if (Object.keys(errors).length  > 0) {
-          return false;
-        }
-        const { message, city, currentDateTime, color } = this.state;
-        this.props.actions.createReminder({
-            message,
-            city,
-            currentDateTime,
-            color
-        });
-        this.props.handleClose();
-    }
-    handleChange = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
-        this.setState({ [name]: value});
-    }
-    handleDateChange = (date) => {
-        this.setState({
-            currentDateTime: date
-        });
-    }
-    render() {
-        const { 
-            errors, 
-            message,
-            city,
-            currentDateTime,
-            color } = this.state;
-        console.log(this.state);
-        return (<Container>
-          <Form>
-                <Form.Row>
-                    <Input
-                        as={Col}
-                        controlId="message"
-                        label="Message"
-                        required
-                        name="message"
-                        type="text"
-                        placeholder="Write a reminder message"
-                        handleChange={this.handleChange}
-                        errorMessage={errors["message"]}
-                        value={message}
-                    ></Input>
-                </Form.Row>
-                <Form.Row>
-                    <Input
-                        as={Col}
-                        controlId="city"
-                        label="City"
-                        required
-                        name="city"
-                        type="text"
-                        placeholder="City"
-                        handleChange={this.handleChange}
-                        errorMessage={errors["city"]}
-                        value={city}
-                    ></Input>
-                </Form.Row>
-                <Form.Row>
+    this.state = {
+      showModal: false,
+      ...reminderInfo,
+      errors: {
+        city: '',
+        message: '',
+        color: '',
+      },
+    };
+  }
 
-                    <Form.Group as={Col} controlId={'dateTime'}>
-                        <Form.Label>Date and Time</Form.Label>
-
-                        <DatePicker
-                            selected={currentDateTime}
-                            onChange={this.handleDateChange}
-                            showTimeSelect
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            customInput={<CustomInput />}
-                        />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <SelectInput
-                        as={Col}
-                        controlId="color"
-                        label="Color"
-                        required
-                        name="color"
-                        type="text"
-                        placeholder="Choose a color"
-                        errorMessage={errors["color"]}
-                        handleChange={this.handleChange}
-                        options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}
-                        value={color}>
-                    </SelectInput>
-                </Form.Row>
-                <Form.Row>
-                    <Button as={Col} variant="primary" type="submit" onClick={this.save}>
-                        Save Changes
-                    </Button>
-                </Form.Row>    
-             </Form>
-        </Container>);
+  createReminder = () => {
+    const errors = validate(this.state);
+    this.setState({ errors });
+    if (Object.keys(errors).length > 0) {
+      return false;
     }
+    const { message, city, currentDateTime, color } = this.state;
+    this.props.actions.createReminder({
+      id: new Date().valueOf(),
+      message,
+      city,
+      currentDateTime,
+      color,
+    });
+    this.props.handleClose();
+  };
+  
+  updateReminder = () => {
+    const errors = validate(this.state);
+    this.setState({ errors });
+    if (Object.keys(errors).length > 0) {
+      return false;
+    }
+    const { id, message, city, currentDateTime, color } = this.state;
+    this.props.actions.updateReminder({
+      id,
+      message,
+      city,
+      currentDateTime,
+      color,
+    });
+    this.props.handleClose();
+  };
+  handleChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value });
+  };
+  handleDateChange = date => {
+    this.setState({
+      currentDateTime: date,
+    });
+  };
+  render() {
+    const { errors, message, city, currentDateTime, color } = this.state;
+
+    const { isEdit } = this.props;
+    const clickEvent = isEdit ? this.updateReminder : this.createReminder;
+    return (
+      <Container>
+        <Form>
+          <Form.Row>
+            <Input
+              as={Col}
+              controlId="message"
+              label="Message"
+              required
+              name="message"
+              type="text"
+              placeholder="Write a reminder message"
+              handleChange={this.handleChange}
+              errorMessage={errors['message']}
+              value={message}
+            />
+          </Form.Row>
+          <Form.Row>
+            <Input
+              as={Col}
+              controlId="city"
+              label="City"
+              required
+              name="city"
+              type="text"
+              placeholder="City"
+              handleChange={this.handleChange}
+              errorMessage={errors['city']}
+              value={city}
+            />
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} controlId={'dateTime'}>
+              <Form.Label>Date and Time</Form.Label>
+
+              <DatePicker
+                selected={currentDateTime}
+                onChange={this.handleDateChange}
+                showTimeSelect
+                dateFormat="MMMM d, yyyy h:mm aa"
+                customInput={<CustomInput />}
+              />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <SelectInput
+              as={Col}
+              controlId="color"
+              label="Color"
+              required
+              name="color"
+              type="text"
+              placeholder="Choose a color"
+              errorMessage={errors['color']}
+              handleChange={this.handleChange}
+              options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}
+              value={color}
+            />
+          </Form.Row>
+          <Form.Row>
+            <Button
+              as={Col}
+              variant="primary"
+              type="submit"
+              onClick={clickEvent}
+            >
+              Save Changes
+            </Button>
+          </Form.Row>
+        </Form>
+      </Container>
+    );
+  }
 }
 
 export function mapStateToProps(state, ownProps) {
-    return {
-        selectedDay: ownProps.selectedDay,
-    };
-  }
-   
-  export function mapDispatchToProps(dispatch) {
-    return {
-      actions: bindActionCreators({
-        ...reminderActions
-      }, dispatch)
-    };
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(ReminderEditor);
+  return {
+    selectedDay: ownProps.selectedDay,
+  };
+}
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        ...reminderActions,
+      },
+      dispatch,
+    ),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReminderEditor);
