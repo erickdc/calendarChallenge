@@ -1,23 +1,43 @@
 import React, { Component } from "react";
-import { Modal, Button } from 'react-bootstrap';
-import CreateReminder from "../../containers/CreateReminder";
+import { connect } from 'react-redux';
+import { Modal } from 'react-bootstrap';
+import ReminderEditor from "../../containers/ReminderEditor";
 
 
 
-export default class EditorModal extends Component {
+class EditorModal extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        const { title, show, handleClose, selectedDay } = this.props;
+        const { show, handleClose, selectedDay,
+           isEdit, selectedReminder } = this.props;
         return (<Modal show={show} animation={false} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Create Reminder</Modal.Title>
+            <Modal.Title>{(isEdit ? 'Edit ' : 'Create ') + 'Reminder'}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <CreateReminder
-           handleClose={handleClose}
-           selectedDay={selectedDay}/></Modal.Body>
+            <ReminderEditor
+              isEdit={isEdit}
+              selectedReminder={selectedReminder}
+              handleClose={handleClose}
+              selectedDay={selectedDay}/>
+          </Modal.Body>
         </Modal>);
     }
 }
+
+export function mapStateToProps({ reminder }) {
+  const { selectedReminder } = reminder;
+  return {
+      selectedReminder,
+  };
+}
+ 
+export function mapDispatchToProps(dispatch) {
+  return {
+    dispatch
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditorModal);

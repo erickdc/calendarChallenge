@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 
 const Input = (props) => {
     const { controlId, label, required, name, type, 
-        handleChange, placeholder, errorMessage, as } = props;
+        handleChange, placeholder, errorMessage, as, value } = props;
     return (
         <Form.Group as={as} controlId={controlId}>
             <Form.Label>{label}</Form.Label>
@@ -13,7 +13,8 @@ const Input = (props) => {
                     type={type} 
                     onChange={handleChange}  
                     placeholder={placeholder}
-                    isInvalid={!!errorMessage}  />
+                    isInvalid={!!errorMessage}
+                    value={value}  />
             <Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback>
         </Form.Group>
     );

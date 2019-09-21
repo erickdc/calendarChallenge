@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
 import Input from "../../components/Input";
-import  * as reminderActions from "../../containers/Reminder/actions";
+import  * as reminderActions from "../Reminder/actions";
 import validate from "./validate";
 import SelectInput from "../../components/SelectInput";
 
@@ -15,15 +15,23 @@ const CustomInput = ({ value, onClick }) => (
         <Button variant="dark" onClick={onClick}>{value}</Button>
     </Col>
 );
-class CreateReminder extends Component {
+class ReminderEditor extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showModal: false,
+        let reminderInfo = {
             message: '',
             city: '',
             color: '',
             currentDateTime: new Date(2019, 8, this.props.selectedDay),
+        }
+        if (this.props.isEdit) {
+            const { message, city, 
+                color, currentDateTime } = this.props.selectedReminder;
+            reminderInfo =  { message, city, color, currentDateTime };
+        }
+        this.state = {
+            showModal: false,
+            ...reminderInfo,
             errors: { 
                 city: '',
                 message: '',
@@ -58,7 +66,13 @@ class CreateReminder extends Component {
         });
     }
     render() {
-        const { errors } = this.state;
+        const { 
+            errors, 
+            message,
+            city,
+            currentDateTime,
+            color } = this.state;
+        console.log(this.state);
         return (<Container>
           <Form>
                 <Form.Row>
@@ -72,6 +86,7 @@ class CreateReminder extends Component {
                         placeholder="Write a reminder message"
                         handleChange={this.handleChange}
                         errorMessage={errors["message"]}
+                        value={message}
                     ></Input>
                 </Form.Row>
                 <Form.Row>
@@ -85,6 +100,7 @@ class CreateReminder extends Component {
                         placeholder="City"
                         handleChange={this.handleChange}
                         errorMessage={errors["city"]}
+                        value={city}
                     ></Input>
                 </Form.Row>
                 <Form.Row>
@@ -93,7 +109,7 @@ class CreateReminder extends Component {
                         <Form.Label>Date and Time</Form.Label>
 
                         <DatePicker
-                            selected={this.state.currentDateTime}
+                            selected={currentDateTime}
                             onChange={this.handleDateChange}
                             showTimeSelect
                             dateFormat="MMMM d, yyyy h:mm aa"
@@ -112,7 +128,8 @@ class CreateReminder extends Component {
                         placeholder="Choose a color"
                         errorMessage={errors["color"]}
                         handleChange={this.handleChange}
-                        options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}>
+                        options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}
+                        value={color}>
                     </SelectInput>
                 </Form.Row>
                 <Form.Row>
@@ -126,7 +143,6 @@ class CreateReminder extends Component {
 }
 
 export function mapStateToProps(state, ownProps) {
-    console.log(ownProps);
     return {
         selectedDay: ownProps.selectedDay,
     };
@@ -140,4 +156,4 @@ export function mapStateToProps(state, ownProps) {
     };
   }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(CreateReminder);
+  export default connect(mapStateToProps, mapDispatchToProps)(ReminderEditor);

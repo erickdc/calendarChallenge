@@ -3,11 +3,11 @@ import { Form } from 'react-bootstrap';
 
 const SelectInput = (props) => {
     const { controlId, label, required, name, type, 
-        handleChange, placeholder, errorMessage, as, options } = props;
+        handleChange, placeholder, errorMessage, as, options, value } = props;
     return (
         <Form.Group as={as} controlId={controlId}>
             <Form.Label>{label}</Form.Label>
-            <Form.Control 
+            <Form.Control
                     as="select"
                     required={required} 
                     name={name} 
@@ -15,9 +15,10 @@ const SelectInput = (props) => {
                     onChange={handleChange}  
                     placeholder={placeholder}
                     isInvalid={!!errorMessage}
+                    defaultValue={value === '' ? 'Choose' : value }
             >
-            <option disabled selected="selected">Choose</option>
-            {options.map((op) =>  <option>{op}</option>)}
+            <option disabled>Choose</option>
+            {options.map((op, index) =>  <option key={index.toString()}>{op}</option>)}
             </Form.Control>
             <Form.Control.Feedback type="invalid">{errorMessage}</Form.Control.Feedback>
         </Form.Group>

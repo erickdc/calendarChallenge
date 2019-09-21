@@ -7,7 +7,8 @@ export default class Headers extends Component {
         const { headers } = this.props;
         return (<Container fluid={true}>
             <Row>
-            {headers.map((day) => <Col className={'background'}><p>{day}</p></Col>)}</Row>
+            {headers.map((day) => <Col key={`header${day}`} 
+            className={'background'}><p>{day}</p></Col>)}</Row>
             </Container>);
     }
 }

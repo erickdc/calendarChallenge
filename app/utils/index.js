@@ -13,3 +13,7 @@ export function getDaysArray(amount) {
 export function isWeekend(date) {
     return !(date.getDay() % 6);
 }
+
+export function getUnixTimestamp(date) {
+   return Math.round((date.getTime()) / 1000);
+}
