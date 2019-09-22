@@ -89,7 +89,6 @@ export class ReminderEditor extends Component {
   };
   render() {
     const { errors, message, city, currentDateTime, color, forecast } = this.state;
-    console.log('this.star', this.state);
     const { isEdit } = this.props;
     const clickEvent = isEdit ? this.updateReminder : this.createReminder;
     return (

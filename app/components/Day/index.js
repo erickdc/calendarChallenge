@@ -35,12 +35,13 @@ class Day extends Component {
 }
 
 export const mapStateToProps = ({ reminder }, ownProps) => {
+  const actualDate = ownProps.actualDate;
   return {
-    actualDate: ownProps.actualDate,
+    actualDate,
     reminders: reminder.reminders
       .filter(r =>
         moment(r.currentDateTime.toLocaleDateString()).isSame(
-          `9/${ownProps.number}/2019`,
+          `${actualDate.getMonth() + 1}/${ownProps.number}/${actualDate.getFullYear()}`,
         ),
       )
       .sort((a, b) => a.currentDateTime - b.currentDateTime),

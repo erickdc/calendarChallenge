@@ -35,7 +35,6 @@ const reminderReducer = (state = initialState, action) =>
           r => r.id === updatedReminder.id,
         );
         reminders[reminderSelectedIndex] = updatedReminder;
-        console.log('reminders', reminders, updatedReminder);
         return {
           ...state,
           reminders,

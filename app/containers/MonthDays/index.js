@@ -8,13 +8,14 @@ import {
   getDaysArray,
   getDayInMonth,
   getUnixTimestamp,
+  getNextEmptyDay
 } from '../../utils/index';
 import * as reminderActions from '../Reminder/actions';
 export class MonthDays extends Component {
   constructor(props) {
     super(props);
-    const amountOfDays = getDayInMonth(9, 2019);
-    const days = getDaysArray(amountOfDays);
+    const amountOfDays = getDayInMonth(8, 2019);
+    const days = [...getDaysArray(2019, 8, amountOfDays), ...getNextEmptyDay(2019, 8, 5)];
 
     this.state = {
       amountOfDays,
@@ -32,6 +33,15 @@ export class MonthDays extends Component {
     this.setState({ ...this.state, showModal: true, selectedDay: day });
   };
   getDays = partialDays => {
+    return partialDays.map(day => (
+      <Day
+        key={getUnixTimestamp(day.actualDate)}
+        onClick={this.onClick}
+        {...day}
+      />
+    ));
+  };
+  getEmptyDays = partialDays => {
     return partialDays.map(day => (
       <Day
         key={getUnixTimestamp(day.actualDate)}
