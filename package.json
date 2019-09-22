@@ -42,7 +42,8 @@
     "tests": "jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prettify": "prettier --write"
+    "prettify": "prettier --write",
+    "heroku-postbuild": "npm run build"
   },
   "browserslist": [
     "last 2 versions",
@@ -95,6 +96,7 @@
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
+    "serve": "^11.1.0",
     "styled-components": "4.2.0"
   },
   "devDependencies": {
