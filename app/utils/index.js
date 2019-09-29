@@ -2,7 +2,7 @@ export function getDayInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
-export function getDaysArray(year ,month, amount) {
+export function getDaysArray(year, month, amount) {
   const days = [];
   for (let i = 1; i <= amount; i += 1) {
     days.push({ number: i, actualDate: new Date(year, month, i) });
@@ -15,7 +15,6 @@ export function getNextEmptyDay(year, month, amount) {
   for (let i = 1; i <= amount; i += 1) {
     days.push({ number: i, actualDate: new Date(year, month + 1, i) });
   }
-  console.log('dasdasd', days);
   return days;
 }
 

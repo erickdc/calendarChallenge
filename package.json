@@ -39,6 +39,7 @@
     "lint:staged": "lint-staged",
     "pretest": "npm run test:clean && npm run lint",
     "test:clean": "rimraf ./coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "tests": "jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
@@ -82,7 +83,7 @@
     "lodash": "4.17.11",
     "minimist": "1.2.0",
     "moment": "^2.24.0",
-    "prop-types": "15.7.2",
+    "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-datepicker": "^2.9.6",
@@ -96,7 +97,7 @@
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
-    "serve": "^11.1.0",
+    "serve": "^11.2.0",
     "styled-components": "4.2.0"
   },
   "devDependencies": {
