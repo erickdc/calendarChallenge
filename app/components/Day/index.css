@@ -1,6 +1,6 @@
 .box {
   width: 95px;
-  height: 140px;
+  height: 120px;
   border: 1px solid black;
 }
 
@@ -12,9 +12,14 @@
   overflow-y: auto;
 }
 
-.weekend {
+.weekend-background {
   background-color: #f1f1f1;
+}
+.weekend-color {
   color: #46749d;
+}
+.greyOut {
+  color: #d3d3d3;
 }
 
 .number {

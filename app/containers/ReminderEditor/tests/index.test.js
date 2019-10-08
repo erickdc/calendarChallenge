@@ -10,7 +10,7 @@ global.Date = jest.fn(() => mockedDate);
 describe('<ReminderEditor />', () => {
   const mockedReminder = jest.fn();
   const props = {
-    selectedDay: 1,
+    selectedDate: new Date(),
     actions: {
       createReminder: mockedReminder,
     },

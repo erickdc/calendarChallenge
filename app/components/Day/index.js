@@ -10,20 +10,23 @@ require('./index.css');
 class Day extends Component {
   constructor(props) {
     super(props);
-    const isWeekendDay = isWeekend(this.props.actualDate);
+    const { actualDate, isActualMonth } = props;
+    const isWeekendDay = isWeekend(actualDate);
     this.state = {
-      weekend: isWeekendDay ? 'weekend' : '',
+      weekendBackground: isWeekendDay ? 'weekend-background' : '',
+      weekendColor: isWeekendDay && isActualMonth ? 'weekend-color' : '',
+      greyOut: !isActualMonth ? 'greyOut' : '',
     };
   }
 
   render() {
-    const { number, onClick, reminders } = this.props;
-    const { weekend } = this.state;
+    const { actualDate, number, onClick, reminders } = this.props;
+    const { weekendBackground, weekendColor, greyOut } = this.state;
     return (
       <Col
         // eslint-disable-next-line react/jsx-no-bind
-        onClick={onClick.bind(this, number)}
-        className={`box scroll ${weekend}`}
+        onClick={onClick.bind(this, actualDate)}
+        className={`box scroll ${weekendBackground} ${weekendColor} ${greyOut}`}
       >
         <Row className="number">{number}</Row>
         {reminders.map(reminder => (

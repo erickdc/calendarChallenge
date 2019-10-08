@@ -10,9 +10,10 @@ class EditorModal extends Component {
     const {
       show,
       handleClose,
-      selectedDay,
+      selectedDate,
       isEdit,
       selectedReminder,
+      selectedMonth,
     } = this.props;
     return (
       <Modal show={show} animation={false} onHide={handleClose}>
@@ -23,10 +24,11 @@ class EditorModal extends Component {
         </Modal.Header>
         <Modal.Body>
           <ReminderEditor
+            selectedMonth={selectedMonth}
             isEdit={isEdit}
             selectedReminder={selectedReminder}
             handleClose={handleClose}
-            selectedDay={selectedDay}
+            selectedDate={selectedDate}
           />
         </Modal.Body>
       </Modal>
@@ -54,7 +56,7 @@ export default connect(
 
 EditorModal.propTypes = {
   handleClose: PropTypes.func,
-  selectedDay: PropTypes.number,
+  selectedDate: PropTypes.object,
   isEdit: PropTypes.bool,
   selectedReminder: PropTypes.object,
   show: PropTypes.bool,

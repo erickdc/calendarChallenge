@@ -26,7 +26,7 @@ export class ReminderEditor extends Component {
       message: '',
       city: '',
       color: '',
-      currentDateTime: new Date(2019, 8, this.props.selectedDay),
+      currentDateTime: this.props.selectedDate,
     };
     if (this.props.isEdit) {
       reminderInfo = this.props.selectedReminder;
@@ -200,7 +200,7 @@ export class ReminderEditor extends Component {
 
 export function mapStateToProps(state, ownProps) {
   return {
-    selectedDay: ownProps.selectedDay,
+    selectedDate: ownProps.selectedDate,
   };
 }
 
@@ -226,7 +226,7 @@ CustomInput.propTypes = {
 };
 
 ReminderEditor.propTypes = {
-  selectedDay: PropTypes.number,
+  selectedDate: PropTypes.object,
   isEdit: PropTypes.func,
   selectedReminder: PropTypes.object,
   handleClose: PropTypes.func,
