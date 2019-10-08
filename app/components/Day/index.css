@@ -1,23 +1,28 @@
 .box {
-    width: 95px;
-    height: 140px;
-    border: 1px solid black;
+  width: 95px;
+  height: 120px;
+  border: 1px solid black;
 }
 
 .rightMargin {
-    margin-right: 5px;
-}
-  
-.scroll {
-    overflow-y: auto;
+  margin-right: 5px;
 }
 
-.weekend {
-    background-color: #F1F1F1;
-    color:  #46749D;
+.scroll {
+  overflow-y: auto;
+}
+
+.weekend-background {
+  background-color: #f1f1f1;
+}
+.weekend-color {
+  color: #46749d;
+}
+.greyOut {
+  color: #d3d3d3;
 }
 
 .number {
-    margin-left: 1%;
-    font-weight: bold;
+  margin-left: 1%;
+  font-weight: bold;
 }

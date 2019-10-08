@@ -23,12 +23,13 @@ export const initialState = {
 const reminderReducer = (state = initialState, action) =>
   produce(state, () => {
     switch (action.type) {
-      case CREATE_REMINDER:
+      case CREATE_REMINDER: {
         return {
           ...state,
           reminders: [...state.reminders, action.reminder],
         };
-      case UPDATE_REMINDER:
+      }
+      case UPDATE_REMINDER: {
         const { reminders } = state;
         const updatedReminder = action.reminder;
         const reminderSelectedIndex = reminders.findIndex(
@@ -39,23 +40,29 @@ const reminderReducer = (state = initialState, action) =>
           ...state,
           reminders,
         };
-      case SELECT_REMINDER:
+      }
+      case SELECT_REMINDER: {
         return {
           ...state,
           selectedReminder: action.reminder,
           showEditModal: true,
         };
-      case CLEAN_SELECTED_REMINDER:
+      }
+      case CLEAN_SELECTED_REMINDER: {
         return {
           ...state,
           selectedReminder: {},
           showEditModal: false,
         };
-      case SHOW_EDIT_MODAL:
+      }
+      case SHOW_EDIT_MODAL: {
         return {
           ...state,
           showEditModal: true,
         };
+      }
+      default:
+        return state;
     }
   });
 

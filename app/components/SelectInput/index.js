@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
 const SelectInput = props => {
@@ -41,3 +42,17 @@ const SelectInput = props => {
 };
 
 export default SelectInput;
+
+SelectInput.propTypes = {
+  controlId: PropTypes.string,
+  label: PropTypes.string,
+  required: PropTypes.bool,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  handleChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  errorMessage: PropTypes.string,
+  as: PropTypes.object,
+  options: PropTypes.array,
+  value: PropTypes.any,
+};

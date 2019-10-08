@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
 const Input = props => {
@@ -34,3 +35,16 @@ const Input = props => {
 };
 
 export default Input;
+
+Input.propTypes = {
+  controlId: PropTypes.string,
+  label: PropTypes.string,
+  required: PropTypes.bool,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  handleChange: PropTypes.func,
+  placeholder: PropTypes.string,
+  errorMessage: PropTypes.string,
+  as: PropTypes.object,
+  value: PropTypes.any,
+};

@@ -8,3 +8,6 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
+
+export const NEXT_MONTH = 'app/App/NEXT_MONTH';
+export const PREVIOUS_MONTH = 'app/App/PREVIOUS_MONTH';

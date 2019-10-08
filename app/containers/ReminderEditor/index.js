@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Form, Container, Col, Button, Row } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Input from '../../components/Input';
@@ -25,13 +26,16 @@ export class ReminderEditor extends Component {
       message: '',
       city: '',
       color: '',
-      currentDateTime: new Date(2019, 8, this.props.selectedDay),
+      currentDateTime: this.props.selectedDate,
     };
     if (this.props.isEdit) {
       reminderInfo = this.props.selectedReminder;
       // historical weather is not free
-      requestApi(`forecast?q=${reminderInfo.city}&cnt=1&APPID=06a4c6f153fa57c2354ab709f010f8fb`)
-      .then((result) => this.setState({ forecast: result }));
+      requestApi(
+        `forecast?q=${
+          reminderInfo.city
+        }&cnt=1&APPID=06a4c6f153fa57c2354ab709f010f8fb`,
+      ).then(result => this.setState({ forecast: result }));
     }
     this.state = {
       showModal: false,
@@ -45,7 +49,7 @@ export class ReminderEditor extends Component {
   }
 
   createReminder = () => {
-    const errors = validate(this.state);
+    const errors = validate(this.state); // eslint-disable-line
     this.setState({ errors });
     if (Object.keys(errors).length > 0) {
       return false;
@@ -59,10 +63,11 @@ export class ReminderEditor extends Component {
       color,
     });
     this.props.handleClose();
+    return true;
   };
 
   updateReminder = () => {
-    const errors = validate(this.state);
+    const errors = validate(this.state); // eslint-disable-line
     this.setState({ errors });
     if (Object.keys(errors).length > 0) {
       return false;
@@ -76,19 +81,29 @@ export class ReminderEditor extends Component {
       color,
     });
     this.props.handleClose();
+    return true;
   };
+
   handleChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     this.setState({ [name]: value });
   };
+
   handleDateChange = date => {
     this.setState({
       currentDateTime: date,
     });
   };
+
   render() {
-    const { errors, message, city, currentDateTime, color, forecast } = this.state;
+    const {
+      errors,
+      message,
+      city,
+      currentDateTime,
+      color,
+      forecast,
+    } = this.state;
     const { isEdit } = this.props;
     const clickEvent = isEdit ? this.updateReminder : this.createReminder;
     return (
@@ -104,7 +119,7 @@ export class ReminderEditor extends Component {
               type="text"
               placeholder="Write a reminder message"
               handleChange={this.handleChange}
-              errorMessage={errors['message']}
+              errorMessage={errors.message}
               value={message}
             />
           </Form.Row>
@@ -118,12 +133,12 @@ export class ReminderEditor extends Component {
               type="text"
               placeholder="City"
               handleChange={this.handleChange}
-              errorMessage={errors['city']}
+              errorMessage={errors.city}
               value={city}
             />
           </Form.Row>
           <Form.Row>
-            <Form.Group as={Col} controlId={'dateTime'}>
+            <Form.Group as={Col} controlId="dateTime">
               <Form.Label>Date and Time</Form.Label>
 
               <DatePicker
@@ -144,18 +159,28 @@ export class ReminderEditor extends Component {
               name="color"
               type="text"
               placeholder="Choose a color"
-              errorMessage={errors['color']}
+              errorMessage={errors.color}
               handleChange={this.handleChange}
               options={['Red', 'Blue', 'Green', 'Grey', 'Yellow']}
               value={color}
             />
           </Form.Row>
-          {isEdit && forecast &&  forecast.cod !== '404' && (<Row>
-            <Col>
-              <p>Weather: <img src={`http://openweathermap.org/img/w/${forecast.list[0].weather[0].icon}.png`} 
-              alt="Avatar" class="image"/>{forecast.list[0].weather[0].description}</p>
+          {isEdit && forecast && forecast.cod !== '404' && (
+            <Row>
+              <Col>
+                <p>
+                  Weather:{' '}
+                  <img
+                    src={`http://openweathermap.org/img/w/${
+                      forecast.list[0].weather[0].icon
+                    }.png`}
+                    alt="Avatar"
+                    className="image"
+                  />
+                  {forecast.list[0].weather[0].description}
+                </p>
               </Col>
-          </Row>
+            </Row>
           )}
           <Form.Row>
             <Button
@@ -175,7 +200,7 @@ export class ReminderEditor extends Component {
 
 export function mapStateToProps(state, ownProps) {
   return {
-    selectedDay: ownProps.selectedDay,
+    selectedDate: ownProps.selectedDate,
   };
 }
 
@@ -194,3 +219,16 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ReminderEditor);
+
+CustomInput.propTypes = {
+  value: PropTypes.object,
+  onClick: PropTypes.func,
+};
+
+ReminderEditor.propTypes = {
+  selectedDate: PropTypes.object,
+  isEdit: PropTypes.func,
+  selectedReminder: PropTypes.object,
+  handleClose: PropTypes.func,
+  actions: PropTypes.object,
+};

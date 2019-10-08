@@ -3,14 +3,14 @@ import ValidateModule from '../validate';
 
 jest.mock('../validate');
 
-const mockedDate = new Date(2019, 9, 21)
+const mockedDate = new Date(2019, 9, 21);
 
 global.Date = jest.fn(() => mockedDate);
 
 describe('<ReminderEditor />', () => {
   const mockedReminder = jest.fn();
   const props = {
-    selectedDay: 1,
+    selectedDate: new Date(),
     actions: {
       createReminder: mockedReminder,
     },

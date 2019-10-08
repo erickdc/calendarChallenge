@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Container } from 'react-bootstrap';
-import styles from './index.css';
+require('./index.css');
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Headers extends Component {
   render() {
     const { headers } = this.props;
     return (
-      <Container fluid={true}>
+      <Container fluid>
         <Row>
           {headers.map(day => (
-            <Col key={`header${day}`} className={'background'}>
+            <Col key={`header${day}`} className="background">
               <p>{day}</p>
             </Col>
           ))}
@@ -18,3 +20,7 @@ export default class Headers extends Component {
     );
   }
 }
+
+Headers.propTypes = {
+  headers: PropTypes.array,
+};
